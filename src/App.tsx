@@ -1,24 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { CreateTodo } from './pages/Create/Create';
 
 function App() {
+  const [tasks, setTasks] = useState([])
+  const [title, setTitle] = useState('')
+
+  function addTask(e) {
+    e.preventDefault()
+    setTasks([...tasks, title])
+    setTitle("")
+    return
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ul>
+        {tasks.map(item => <li>{item}</li>)}
+      </ul>
+      <form onSubmit={addTask}>
+        <label >Title:</label>
+        <input value={title} onChange={e => setTitle(e.target.value)} id="title" />
+        <button type="submit">create</button>
+      </form>
     </div>
   );
 }
