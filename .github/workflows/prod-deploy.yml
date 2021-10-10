@@ -27,7 +27,7 @@ jobs:
 
       # - run: yarn install
       # - run: yarn build
-      - run: echo ${{ secrets.PROD_USERKEY }}
+      - run: echo "${{ secrets.PROD_USERKEY }}"
 
       # - name: Run script
       #   uses: appleboy/ssh-action@master
