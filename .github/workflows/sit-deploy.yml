@@ -1,0 +1,54 @@
+name: deploy
+on:
+  push:
+    branches:
+      - develop
+    tags:
+      - 'v*-alpha'
+jobs:
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+    steps:
+      #      - name: Start alert before deploy
+      #        uses: snow-actions/line-notify@v1.0.0
+      #        with:
+      #          access_token: ${{ secrets.LINE_ACCESS_TOKEN }}
+      #          message: Deploying Back Office
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_REACT_APP_API_URL: "https://api-test.mybmwreward.com"
+          envkey_REACT_APP_SOCKET_URL: "https://api-test.mybmwreward.com"
+          file_name: .env
+
+      - run: yarn install
+      - run: yarn build
+
+      - name: Deploy via ssh
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SIT_HOST }}
+          username: ${{ secrets.SIT_USERNAME }}
+          password: ${{ secrets.SIT_PASSWORD }}
+          source: "./build"
+          target: ${{ secrets.SIT_DEPLOY_PATH }}
+
+#      - name: The job has succeeded
+#        if: ${{ success() }}
+#        uses: snow-actions/line-notify@v1.0.0
+#        with:
+#          access_token: ${{ secrets.LINE_ACCESS_TOKEN }}
+#          message: Deploy Back Office Success "${{ github.event.head_commit.message }}"
+#
+#      - name: The job has failed
+#        if: ${{ failure() }}
+#        uses: snow-actions/line-notify@v1.0.0
+#        with:
+#          access_token: ${{ secrets.LINE_ACCESS_TOKEN }}
+#          message: Deploy Back Office Fail
