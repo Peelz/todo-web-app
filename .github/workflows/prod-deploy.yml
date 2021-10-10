@@ -27,6 +27,6 @@ jobs:
         with:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_USERNAME }}
-          password: ${{ secrets.PROD_USERKEY }}
+          key: ${{ secrets.PROD_USERKEY }}
           source: "./build"
           target: ${{ secrets.PROD_DEPLOY_PATH }}
