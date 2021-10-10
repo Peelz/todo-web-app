@@ -29,20 +29,20 @@ jobs:
       # - run: yarn build
       # - run: echo "${{ secrets.PROD_USERKEY }}"
 
-      - name: Run script
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.PROD_USERNAME }}
-          key: ${{ secrets.PROD_USERKEY }}
-          port: 22
-          script: echo "Hello, world"
-
-      # - name: Deploy via ssh
-      #   uses: appleboy/scp-action@master
+      # - name: Run script
+      #   uses: appleboy/ssh-action@master
       #   with:
       #     host: ${{ secrets.PROD_HOST }}
       #     username: ${{ secrets.PROD_USERNAME }}
       #     key: ${{ secrets.PROD_USERKEY }}
-      #     source: "./build"
-      #     target: ${{ secrets.PROD_DEPLOY_PATH }}
+      #     port: 22
+      #     script: echo "Hello, world"
+
+      - name: Deploy via ssh
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          key: ${{ secrets.PROD_USERKEY }}
+          source: "./"
+          target: ${{ secrets.PROD_DEPLOY_PATH }}
