@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { CreateTodo } from './pages/Create/Create';
 
 function App() {
   const [tasks, setTasks] = useState([])
